@@ -5,23 +5,27 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var customer_1 = require("./customer");
 var CustomerComponent = (function () {
-    function CustomerComponent() {
+    function CustomerComponent(fb) {
+        this.fb = fb;
         this.customer = new customer_1.Customer();
     }
     CustomerComponent.prototype.ngOnInit = function () {
-        this.customerForm = new forms_1.FormGroup({
-            firstName: new forms_1.FormControl(),
-            lastName: new forms_1.FormControl(),
-            email: new forms_1.FormControl(),
-            sendCatalog: new forms_1.FormControl(true)
+        this.customerForm = this.fb.group({
+            firstName: ['', [forms_1.Validators.required, forms_1.Validators.minLength(3)]],
+            lastName: ['', [forms_1.Validators.required, forms_1.Validators.maxLength(15)]],
+            email: ['', [forms_1.Validators.required, forms_1.Validators.pattern("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+")]],
+            sendCatalog: true
         });
     };
     CustomerComponent.prototype.populateTestData = function () {
-        this.customerForm.setValue({
+        this.customerForm.patchValue({
             firstName: 'Jack',
             lastName: 'Harker',
             email: 'jackharker@torchwood.com',
@@ -38,7 +42,16 @@ CustomerComponent = __decorate([
     core_1.Component({
         selector: 'my-signup',
         templateUrl: './app/customers/customer.component.html'
-    })
+    }),
+    __metadata("design:paramtypes", [forms_1.FormBuilder])
 ], CustomerComponent);
 exports.CustomerComponent = CustomerComponent;
+//  ngOnInit(): void {
+//     this.customerForm = this.fb.group({
+//         firstName: '',
+//         lastName: {value: 'n/a', disabled: false},
+//         email: '',
+//         sendCatalog: true
+//     });
+// }
 //# sourceMappingURL=customer.component.js.map
