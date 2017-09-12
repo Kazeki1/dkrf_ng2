@@ -20,7 +20,9 @@ var CustomerComponent = (function () {
         this.customerForm = this.fb.group({
             firstName: ['', [forms_1.Validators.required, forms_1.Validators.minLength(3)]],
             lastName: ['', [forms_1.Validators.required, forms_1.Validators.maxLength(15)]],
-            email: ['', [forms_1.Validators.required, forms_1.Validators.pattern("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+")]],
+            email: ['', [forms_1.Validators.required, forms_1.Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+')]],
+            phone: '',
+            notification: 'email',
             sendCatalog: true
         });
     };
@@ -36,6 +38,16 @@ var CustomerComponent = (function () {
         console.log(this.customerForm);
         console.log('Saved: ' + JSON.stringify(this.customerForm.value));
     };
+    CustomerComponent.prototype.setNotification = function (notifyVia) {
+        var phoneControl = this.customerForm.get('phone');
+        if (notifyVia === 'text') {
+            phoneControl.setValidators(forms_1.Validators.required);
+        }
+        else {
+            phoneControl.clearValidators();
+        }
+        phoneControl.updateValueAndValidity();
+    };
     return CustomerComponent;
 }());
 CustomerComponent = __decorate([
@@ -46,12 +58,4 @@ CustomerComponent = __decorate([
     __metadata("design:paramtypes", [forms_1.FormBuilder])
 ], CustomerComponent);
 exports.CustomerComponent = CustomerComponent;
-//  ngOnInit(): void {
-//     this.customerForm = this.fb.group({
-//         firstName: '',
-//         lastName: {value: 'n/a', disabled: false},
-//         email: '',
-//         sendCatalog: true
-//     });
-// }
 //# sourceMappingURL=customer.component.js.map

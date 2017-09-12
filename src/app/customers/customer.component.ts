@@ -17,11 +17,13 @@ export class CustomerComponent  implements OnInit {
         this.customerForm = this.fb.group({
             firstName: ['', [Validators.required, Validators.minLength(3)]],
             lastName: ['', [Validators.required, Validators.maxLength(15)]],
-            email: ['', [Validators.required, Validators.pattern("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+")]],
+            email: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+')]],
+            phone: '',
+            notification: 'email',
             sendCatalog: true
         });
     }
-    populateTestData(): void {
+        populateTestData(): void {
         this.customerForm.patchValue({
             firstName: 'Jack',
             lastName: 'Harker',
@@ -34,13 +36,15 @@ export class CustomerComponent  implements OnInit {
         console.log(this.customerForm);
         console.log('Saved: ' + JSON.stringify(this.customerForm.value));
     }
+
+    setNotification(notifyVia: string): void {
+        const phoneControl = this.customerForm.get('phone');
+        if (notifyVia === 'text') {
+            phoneControl.setValidators(Validators.required);
+        } else {
+            phoneControl.clearValidators();
+        }
+        phoneControl.updateValueAndValidity();
+    }
  }
 
-//  ngOnInit(): void {
-//     this.customerForm = this.fb.group({
-//         firstName: '',
-//         lastName: {value: 'n/a', disabled: false},
-//         email: '',
-//         sendCatalog: true
-//     });
-// }
